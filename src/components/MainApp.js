@@ -1,18 +1,49 @@
-import React, { useState, useCallback, useEffect } from 'react'
-// import Footer from './Footer'
-// import AddTodo from '../containers/AddTodo'
-// import VisibleTodoList from '../containers/VisibleTodoList'
+import React from 'react'
 import Box from '@mui/material/Box'
 import Stack from '@mui/material/Stack'
 import Button from '@mui/material/Button'
+import Paper from '@mui/material/Paper'
 import { Stage, Layer } from 'react-konva';
-import Konva from 'konva';
+import { styled } from '@mui/material/styles';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { addElement, importData } from './../redux/actions'
 import { downloadURI } from './../utils'
 import URLImage from './URLImage'
-import { styled } from '@mui/material/styles';
+import ScrollingWrapper from './ScrollingWrapper'
+import Table2Person from './../assets/images/table-2-person.png'
+import Table4Person from './../assets/images/table-4-person.png'
+import Table6Person from './../assets/images/table-6-person.png'
+import Table7Person from './../assets/images/table-7-person.png'
+import TableBig4Person from './../assets/images/table-big-4-person.png'
+import TableBig6Person from './../assets/images/table-big-6-person.png'
+
+const TABLES = [{
+    id: 1,
+    img: Table2Person,
+    name: 'Table2Person'
+}, {
+    id: 2,
+    img: Table4Person,
+    name: 'Table4Person',
+}, {
+    id: 3,
+    img: Table6Person,
+    name: 'Table6Person'
+}, {
+    id: 4,
+    img: Table7Person,
+    name: 'Table7Person'
+}, {
+    id: 5,
+    img: TableBig4Person,
+    name: 'TableBig4Person'
+}, {
+    id: 6,
+    img: TableBig6Person,
+    name: 'TableBig6Person'
+}
+]
 
 
 const VisuallyHiddenInput = styled('input')({
@@ -73,15 +104,6 @@ const MainApp = () => {
 
             const  fileReader = new FileReader();
             fileReader.onload = function(){
-                console.log(fileReader.result);
-
-                // stageRef.current = Konva.Node.create(fileReader.result, stageRef.current);
-                // Konva.Node.create(fileReader.result, stageRef.current);
-
-                // console.log('data',
-                //     JSON.parse(fileReader.result)
-                // );
-
                 dispatch(
                     importData(
                         JSON.parse(fileReader.result)
@@ -111,17 +133,22 @@ const MainApp = () => {
                             />
                             </Button>
                 </Stack>
-                    <Box direction='row' spacing={1}>
-                        <img
-                            id={1}
-                            height={50}
-                            width={50}
-                            alt="lion"
-                            src="https://konvajs.org/assets/lion.png"
-                            draggable="true"
-                            onDragStart={handleDragStart}
-                        />
-                    </Box>
+                    <ScrollingWrapper overflowY='hidding' component={Paper}>
+                        <Stack direction='row' spacing={2} px={2}>
+                            {TABLES.map(({ img, name, id }) => (
+                                <img
+                                id={id}
+                                height={50}
+                                width={50}
+                                alt={name}
+                                src={img}
+                                draggable="true"
+                                onDragStart={handleDragStart}
+                            />
+                            ))}
+
+                        </Stack>
+                    </ScrollingWrapper>
 
                 <Box display={'block'}>
                     <div
